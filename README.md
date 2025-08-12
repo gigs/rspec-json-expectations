@@ -1,22 +1,16 @@
 # RSpec::JsonExpectations
 
-[![Build Status](https://travis-ci.org/waterlink/rspec-json_expectations.svg?branch=master)](https://travis-ci.org/waterlink/rspec-json_expectations)
-
-Set of matchers and helpers for RSpec 3 to allow you test your JSON API responses like a pro.
+RSpec matchers for working with JSON. Originally forked from https://github.com/waterlink/rspec-json_expectations.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'rspec-json_expectations'
+    gem 'rspec-json-expectations', git: 'https://github.com/gigs/rspec-json-expectations.git', branch: 'main'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install rspec-json_expectations
 
 ## Setup
 
@@ -94,17 +88,7 @@ rspec ./spec/user_api_spec.rb:17 # User API has basic info about user
 rspec ./spec/user_api_spec.rb:25 # User API has some additional info about user
 ```
 
-For other features look into documentation: https://www.relishapp.com/waterlink/rspec-json-expectations/docs/json-expectations
-
 ## Development
 
 - `bundle install` to install all dependencies.
 - `bin/build` to run the test suite
-
-## Contributing
-
-1. Fork it ( https://github.com/waterlink/rspec-json_expectations/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
