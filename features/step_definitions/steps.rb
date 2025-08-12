@@ -23,7 +23,6 @@ end
 
 When(/^I run "(.*?)"$/) do |command|
   @output = `cd #{DUMMY_FOLDER}; #{command}`
-  puts @output
 end
 
 Then(/^I see:$/) do |what|
