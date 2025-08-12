@@ -127,7 +127,7 @@ Feature: Unordered array matching support for include_json matcher
           """
       And I see:
           """
-                             expected: {:id=>35, :badges=>["unknown", "badge"]}
+                             expected: {id: 35, badges: ["unknown", "badge"]}
                                   got: nil
           """
 
