@@ -12,12 +12,23 @@ module RSpec
 
         def render_error(path, error, negate=false)
           [
+            render_rspec_failure_message(path, error, negate),
             render_size_mismatch(path, error, negate),
             render_no_key(path, error, negate),
             render_not_eq(path, error, negate),
             render_not_match(path, error, negate),
             render_missing(path, error, negate)
           ].select { |e| e }.first
+        end
+
+        def render_rspec_failure_message(path, error, negate=false)
+          return unless error_is_rspec_failure_message?(error)
+          message = negate ? error[:negated_failure_message] : error[:failure_message]
+          %{
+          json atom at path "#{path}" does not match:
+
+            #{message}
+          }
         end
 
         def render_size_mismatch(path, error, negate=false)
@@ -68,6 +79,10 @@ module RSpec
                  got: nil
             }
           end.join("\n")
+        end
+
+        def error_is_rspec_failure_message?(error)
+          error.is_a?(Hash) && error.has_key?(:failure_message)
         end
 
         def error_is_size_mismatch?(error)
