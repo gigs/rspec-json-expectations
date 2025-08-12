@@ -78,7 +78,6 @@ Feature: RSpec matcher support for include_json matcher
 
             it "has basic info about user" do
               matcher = be < 30
-              puts "\'matcher.inspect\'"
               expect(subject).to include_json(
                 id: 25,
                 email: "john.smith@example.com",
