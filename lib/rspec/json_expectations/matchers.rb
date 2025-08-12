@@ -21,6 +21,27 @@ RSpec::JsonExpectations::MatcherFactory.new(:include_json).define_matcher do
   end
 end
 
+RSpec::JsonExpectations::MatcherFactory.new(:match_json).define_matcher do
+  def traverse(expected, actual, negate=false)
+    supported_types = [Hash, Array, ::RSpec::JsonExpectations::Matchers::UnorderedArrayMatcher]
+
+    unless supported_types.any? { expected.is_a?(it) }
+      raise ArgumentError, "Expected value in match_json must be JSON-ish"
+    end
+
+    representation = actual.is_a?(String) ? JSON.parse(actual) : actual
+
+    RSpec::JsonExpectations::JsonTraverser.traverse(
+      @include_json_errors = { _negate: negate},
+      expected,
+      representation,
+      negate,
+      [],
+      {exact_size: true}
+    )
+  end
+end
+
 RSpec::JsonExpectations::MatcherFactory.new(:include_unordered_json).define_matcher do
   def traverse(expected, actual, negate=false)
     unless expected.is_a?(Array)

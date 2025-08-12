@@ -16,7 +16,7 @@ module RSpec
       class << self
         def traverse(errors, expected, actual, negate=false, prefix=[], options={})
           [
-            handle_hash(errors, expected, actual, negate, prefix),
+            handle_hash(errors, expected, actual, negate, prefix, options),
             handle_array(errors, expected, actual, negate, prefix),
             handle_unordered(errors, expected, actual, negate, prefix, options),
             handle_value(errors, expected, actual, negate, prefix),
@@ -28,11 +28,16 @@ module RSpec
 
         private
 
-        def handle_keyvalue(errors, expected, actual, negate=false, prefix=[])
+        def handle_keyvalue(errors, expected, actual, negate=false, prefix=[], options={})
+          if options[:exact_size] && expected.size != actual.size
+            errors[prefix.join("/")] = {expected:, actual:}
+            return conditionally_negate(false, negate)
+          end
+
           expected.map do |key, value|
             new_prefix = prefix + [key]
             if has_key?(actual, key)
-              traverse(errors, value, fetch(actual, key), negate, new_prefix)
+              traverse(errors, value, fetch(actual, key), negate, new_prefix, options)
             else
               errors[new_prefix.join("/")] = :no_key unless negate
               conditionally_negate(false, negate)
@@ -40,10 +45,10 @@ module RSpec
           end.all? || false
         end
 
-        def handle_hash(errors, expected, actual, negate=false, prefix=[])
+        def handle_hash(errors, expected, actual, negate=false, prefix=[], options={})
           return nil unless expected.is_a?(Hash)
 
-          handle_keyvalue(errors, expected, actual, negate, prefix)
+          handle_keyvalue(errors, expected, actual, negate, prefix, options)
         end
 
         def handle_array(errors, expected, actual, negate=false, prefix=[])
