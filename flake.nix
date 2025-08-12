@@ -21,11 +21,17 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
+
+        ruby = pkgs.ruby_3_4;
+        rubyPackages = pkgs.rubyPackages_3_4;
       in
       {
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = [
-            pkgs.ruby_3_4
+            ruby
+            rubyPackages.date
+            rubyPackages.psych
+            rubyPackages.bigdecimal
           ];
         };
 
