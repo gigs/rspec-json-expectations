@@ -90,8 +90,8 @@ Feature: RSpec matcher support for include_json matcher
      When I run "rspec spec/matcher_example_fail_spec.rb"
      Then I see:
           """
-                             expected: "be < 30"
-                                  got: 55
+                             expected: < 30
+                      got:   55
           """
       And I see:
           """
