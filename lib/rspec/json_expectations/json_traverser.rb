@@ -16,7 +16,7 @@ module RSpec
         def traverse(errors, expected, actual, negate=false, prefix=[], options={})
           [
             handle_hash(errors, expected, actual, negate, prefix, options),
-            handle_array(errors, expected, actual, negate, prefix),
+            handle_array(errors, expected, actual, negate, prefix, options),
             handle_unordered(errors, expected, actual, negate, prefix, options),
             handle_value(errors, expected, actual, negate, prefix),
             handle_regex(errors, expected, actual, negate, prefix),
@@ -50,11 +50,11 @@ module RSpec
           handle_keyvalue(errors, expected, actual, negate, prefix, options)
         end
 
-        def handle_array(errors, expected, actual, negate=false, prefix=[])
+        def handle_array(errors, expected, actual, negate=false, prefix=[], options={})
           return nil unless expected.is_a?(Array)
 
           transformed_expected = expected.each_with_index.map { |v, k| [k, v] }
-          handle_keyvalue(errors, transformed_expected, actual, negate, prefix)
+          handle_keyvalue(errors, transformed_expected, actual, negate, prefix, options)
         end
 
         def handle_unordered(errors, expected, actual, negate=false, prefix=[], options={})

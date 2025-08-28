@@ -137,3 +137,27 @@ Feature: match_json matcher
                              expected: {a: 1}
                                   got: {"a" => 1, "b" => 2}
           """
+
+  Scenario: Wrongly expecting non-empty JSON array to be empty
+    Given a file "spec/fail_empty_array.rb" with:
+          """ruby
+          require "spec_helper"
+
+          RSpec.describe "test" do
+            subject { '[1]' }
+
+            it "passes" do
+              expect(subject).to match_json([])
+            end
+          end
+          """
+    When I run "rspec spec/fail_empty_array.rb"
+    Then I see:
+          """
+          1 example, 1 failure
+          """
+    And I see:
+          """
+                             expected: []
+                                  got: [1]
+          """
