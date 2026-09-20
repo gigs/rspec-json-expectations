@@ -1,19 +1,17 @@
+# frozen_string_literal: true
+
+require "fileutils"
+
 DUMMY_FOLDER = "dummy"
 
-def init
-  `mkdir -p #{DUMMY_FOLDER}`
-  `cp -r gemfiles #{DUMMY_FOLDER}`
-  `cp *.gemspec #{DUMMY_FOLDER}`
-  `cp -r lib #{DUMMY_FOLDER}`
-end
-
-init
+FileUtils.rm_rf(DUMMY_FOLDER)
+FileUtils.mkdir_p(DUMMY_FOLDER)
 
 Given(/^a file "(.*?)" with:$/) do |filename, contents|
   @locals ||= {}
-  full_path = File.join(DUMMY_FOLDER, filename)
-  `mkdir -p #{File.dirname(full_path)}`
-  File.open(full_path, 'w') { |f| f.write(contents % @locals) }
+  path = File.join(DUMMY_FOLDER, filename)
+  FileUtils.mkdir_p(File.dirname(path))
+  File.write(path, contents % @locals)
 end
 
 Given(/^a local "(.*?)" with:$/) do |key, value|
@@ -22,10 +20,9 @@ Given(/^a local "(.*?)" with:$/) do |key, value|
 end
 
 When(/^I run "(.*?)"$/) do |command|
-  @output = `cd #{DUMMY_FOLDER}; #{command}`
+  @output = Dir.chdir(DUMMY_FOLDER) { `#{command}` }
 end
 
 Then(/^I see:$/) do |what|
-  @output ||= ""
-  expect(@output).to include(what)
+  expect(@output.to_s).to include(what)
 end

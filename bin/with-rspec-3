@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-set -Eeuo pipefail
-
-BUNDLE_GEMFILE=gemfiles/rspec-3 bundle $*

@@ -6,11 +6,15 @@ RSpec matchers for working with JSON. Originally forked from https://github.com/
 
 Add this line to your application's Gemfile:
 
-    gem 'rspec-json-expectations', git: 'https://github.com/gigs/rspec-json-expectations.git', branch: 'main'
+```ruby
+gem "rspec-json-expectations", git: "https://github.com/gigs/rspec-json-expectations.git", branch: "main"
+```
 
 And then execute:
 
-    $ bundle
+```sh
+bundle install
+```
 
 ## Setup
 
@@ -91,4 +95,11 @@ rspec ./spec/user_api_spec.rb:25 # User API has some additional info about user
 ## Development
 
 - `bundle install` to install all dependencies.
-- `bin/build` to run the test suite
+- `bundle exec rake test` to run the test suite.
+
+The suite is written in Cucumber. Each scenario writes a spec file into a
+scratch `dummy/` directory and runs RSpec against it, so the features exercise
+the matchers the same way a consumer would.
+
+CI runs the suite on the Ruby versions listed in
+[`.github/workflows/ci.yaml`](.github/workflows/ci.yaml).

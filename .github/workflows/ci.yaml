@@ -6,12 +6,17 @@ on:
     branches: [main]
 
 jobs:
-  ci:
+  test:
+    name: Ruby ${{ matrix.ruby }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["3.4", "4.0"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/nix-setup
-      - name: Run tests
-        run: |
-          nix develop -c \
-            bin/build
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - run: bundle exec rake test
